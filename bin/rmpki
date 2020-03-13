@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Script to remove PKI
+#
+# Usage: rmpki -f
+#
+# 
+
+USAGE="rmpki -f"
+
+if [[ "$1" != "-f" ]]
+then
+    echo Usage: $USAGE
+    exit 1
+fi
+
+INSTALLDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/..
+cd $INSTALLDIR || exit 1
+rm -f root/crl/* root/cacerts/* root/keys/* root/db/* root/newcerts/* issuing/crl/* issuing/cacerts/* issuing/keys/* issuing/db/* issuing/newcerts/* issuing/csr/* 
+rm -rf ee/*
+touch root/db/index.txt
+echo 1000 > root/db/serial
+touch issuing/db/index.txt
+echo 2000 > issuing/db/serial

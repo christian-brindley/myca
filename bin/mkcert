@@ -1,0 +1,86 @@
+#!/bin/bash
+#
+# Script to create server certificates for ForgeRock platform
+#
+# Usage: mkcert commonName
+#
+# Creates the following for the given commonName
+# 
+# - keystore             PKCS12 keystore for LDAPS server private key and cert chain
+# - keystore.pin         Password for keystore
+# - ads-truststore       PKCS12 keystore for replication server private key and cert chain
+# - ads-truststore.pin   Password for truststore
+# - ads-truststore.ldif  LDIF import file for DS trust store
+# 
+
+USAGE="mkcert commonName"
+KEYPASS=Passw0rd
+CACERT=issuing/cacerts/cert.pem
+DS_ADMIN_PORT=4444
+ISSUERDIR=issuing
+
+cn=$1
+
+
+if [[ "$cn" == "" ]]
+then
+    echo Usage: $USAGE
+    exit 1
+fi
+
+INSTALLDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/..
+cd $INSTALLDIR || exit 1
+eedir=ee/$cn
+
+# Directory for new files
+
+mkdir -p $eedir
+
+# Create new server key pair and request
+
+openssl genrsa -aes256 -out $eedir/key.pem -passout pass:Passw0rd 2048 
+
+openssl req -config $ISSUERDIR/etc/ca.conf \
+      -key $eedir/key.pem \
+      -new -sha256 -out $eedir/csr.pem \
+      -subj "/CN=$cn" \
+      -passin pass:$KEYPASS
+
+# Issue new server certificate 
+
+openssl ca -batch -config $ISSUERDIR/etc/ca.conf \
+      -extensions server_cert -days 375 -notext -md sha256 \
+      -in $eedir/csr.pem \
+      -out $eedir/cert.pem \
+      -passin pass:$KEYPASS
+
+# Create LDAPS and replication keystores with new cert chain and key
+
+cat $eedir/cert.pem $CACERT > $eedir/chain.pem
+
+openssl pkcs12 -export  -in $eedir/chain.pem -inkey $eedir/key.pem -passin pass:$KEYPASS -name server-cert -out $eedir/keystore -passout pass:$KEYPASS
+echo -n $KEYPASS > $eedir/keystore.pin
+
+openssl pkcs12 -export  -in $eedir/chain.pem -inkey $eedir/key.pem -passin pass:$KEYPASS -name ads-certificate -out $eedir/ads-truststore -passout pass:$KEYPASS
+echo -n $KEYPASS > $eedir/ads-truststore.pin
+
+# Create LDIF file for import into DS to trust replication certificate
+
+md5=`openssl base64 -in $eedir/cert.pem -d | openssl md5 | cut -f2 -d" " | awk '{print toupper($0)}'`
+cert=`openssl base64 -in $eedir/cert.pem -d | openssl base64 -A`
+
+cat << EOF > $eedir/ads-truststore.ldif
+dn: ds-cfg-key-id=$md5,cn=instance keys,cn=admin data
+changetype:add
+objectclass: top
+objectclass: ds-cfg-instance-key
+ds-cfg-key-id: $md5
+ds-cfg-public-key-certificate;binary:: $cert
+
+
+dn: cn=$cn:$DS_ADMIN_PORT,cn=servers,cn=admin data
+changetype:modify
+replace: ds-cfg-key-id
+ds-cfg-key-id: $md5
+EOF
+

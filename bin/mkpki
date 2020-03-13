@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+# Script to create server certificates for ForgeRock platform
+#
+# Usage: mkpki commonNameBase
+#
+# Creates a new PKI with a root and issuing CA
+# 
+# Root and Issuing CA common name will include supplied commonNameBase
+# 
+
+USAGE="mkpki commonNameBase"
+ISSUERDIR=issuing
+base_cn=$1
+
+
+if [[ "$base_cn" == "" ]]
+then
+    echo Usage: $USAGE
+    exit 1
+fi
+
+INSTALLDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/..
+cd $INSTALLDIR || exit 1
+
+# Create root CA key and cert
+
+openssl genrsa -aes256 -out root/keys/key.pem -passout pass:Passw0rd 4096
+
+openssl req  -config root/etc/ca.conf -key root/keys/key.pem -new \
+   -x509 -days 7300 -sha256 -extensions v3_ca \
+   -out root/cacerts/cert.pem -passin pass:Passw0rd -subj "/CN=$base_cn Root CA"
+
+# Create issuing CA key and cert
+
+openssl genrsa -aes256 -out $ISSUERDIR/keys/key.pem -passout pass:Passw0rd 4096
+
+openssl req -config $ISSUERDIR/etc/ca.conf -new -sha256 \
+   -key $ISSUERDIR/keys/key.pem -passin pass:Passw0rd \
+   -out $ISSUERDIR/csr/csr.pem -subj "/CN=$base_cn Issuing CA"
+
+openssl ca -config root/etc/ca.conf -extensions v3_intermediate_ca -days 3650 \
+   -notext -md sha256 -in $ISSUERDIR/csr/csr.pem \
+   -out $ISSUERDIR/cacerts/cert.pem -passin pass:Passw0rd -batch
