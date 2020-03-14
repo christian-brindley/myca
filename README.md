@@ -19,7 +19,7 @@ cd myca
 
 ## Setup
 
-Run the *mkpki* script to create the new root and issuing certificate authorities. Specify the prefix for the common name: this will be appended with " Root CA" and " Issuing CA" for the commonName fields of the root and issuing CA respectively. E.g.
+Run the **mkpki** script to create the new root and issuing certificate authorities. Specify the prefix for the common name: this will be appended with " Root CA" and " Issuing CA" for the commonName fields of the root and issuing CA respectively. E.g.
 
 ```
 bin/mkpki "Test Platform"
@@ -33,7 +33,7 @@ Once the script has run, the root CA certificate is created in the directory roo
 
 ## Issuing certificates
 
-Run the *mkcert* script to issue a new end entity certificate, specifying the value to use for the commonName field. This version creates a server certificate, with extended key usage for client and server authentication. E.g.
+Run the **mkcert** script to issue a new end entity certificate, specifying the value to use for the commonName field. This version creates a server certificate, with extended key usage for client and server authentication. E.g.
 
 ```
 bin/mkcert "www.example.com"
