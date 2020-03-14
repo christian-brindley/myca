@@ -11,7 +11,7 @@ As of this version, the only kind of end entity certificate issued is a server c
 
 Requires `bash` and `openssl`
 
-## Overview
+## Overview
 
 You can be up and running in 3 steps:
 
