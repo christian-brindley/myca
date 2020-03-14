@@ -50,9 +50,9 @@ Once the certificate is issued, the following files are created in `ee/{commonNa
 - `key.pem` the server private key
 - `keystore` a PKCS12 keystore with the server certificate chain and private key, with alias `server-cert` (suitable for use by ForgeRock DS as an LDAPS server certificate)
 - `keystore.pin` the password for `keystore`
-- `ads-truststore` a PKCS12 keystore with the server certificate chain and private key, with alias `ads-certificate` (for use by ForgeRock DS replication)
+- `ads-truststore` a PKCS12 keystore with the server certificate chain and private key, with alias `ads-certificate` (for use by [ForgeRock DS replication](https://backstage.forgerock.com/knowledge/kb/article/a33131480))
 - `ads-truststore.pin` the password for `ads-truststore`
-- `ads-truststore.ldif` an LDAP modify input script for configuring the certificate for use in ForgeRock DS replication
+- `ads-truststore.ldif` an LDAP modify input script for [replacing the certificate used for ForgeRock DS replication](https://backstage.forgerock.com/knowledge/kb/article/a20516091)
 
 ## Re-intialising
 
