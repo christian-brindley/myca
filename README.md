@@ -1,4 +1,5 @@
 # myca
+v1.0
 
 Mini certificate authority.
 
@@ -52,3 +53,13 @@ Once the certificate is issued, the following files are created in ee/{commonNam
 - `ads-truststore` a PKCS12 keystore with the server certificate chain and private key, with alias `ads-certificate` (for use by ForgeRock DS replication)
 - `ads-truststore.pin` the password for `ads-truststore`
 - `ads-truststore.ldif` an LDAP modify input script for configuring the certificate for use in ForgeRock DS replication
+
+## Re-intialising
+
+To wipe out all CA and end-entity keys and certificates, run the `rmpki` script as follows
+
+```
+bin/rmpki -f
+```
+**Caution**: this is irreverisible. 
+
