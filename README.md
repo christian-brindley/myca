@@ -22,7 +22,7 @@ cd myca
 
 ## Setup
 
-Run the `mkpki` script to create the new root and issuing certificate authorities. Specify the prefix for the common name: this will be appended with " Root CA" and " Issuing CA" for the commonName fields of the root and issuing CA respectively. E.g.
+Run the `mkpki` script to create the new root and issuing certificate authorities. Specify the prefix for the common name: this will be appended with ` Root CA` and ` Issuing CA` for the commonName fields of the root and issuing CA respectively. E.g.
 
 ```
 bin/mkpki "Test Platform"
