@@ -1,17 +1,13 @@
 # myca
 v1.0
 
+## Overview
+
 Mini certificate authority.
 
 Scripts and config for setting up and running a two layer CA hierarchy with an offline root and online issuing CA.
 
 As of this version, the only kind of end entity certificate issued is a server certificate, enabled for TLS client and server authentication.
-
-## Requirements
-
-Requires `bash` and `openssl`
-
-## Overview
 
 You can be up and running in 3 steps:
 
@@ -23,6 +19,7 @@ Creating CA databases
 Creating root CA
 Creating issuing CA
 ```
+
 Now you can create server keys and certificates - e.g.
 
 ```
@@ -31,6 +28,10 @@ Issuing certificate
 $ openssl x509 -in ee/www.example.com/cert.pem  -subject -noout
 subject= /CN=www.example.com
 ```
+
+## Requirements
+
+Requires `bash` and `openssl`
 
 ## Installation
 
