@@ -27,6 +27,15 @@ cd $INSTALLDIR || exit 1
 
 date >> $LOGFILE
 
+# Create CA databases
+
+echo Creating CA databases
+
+touch root/db/index.txt
+echo 1000 > root/db/serial
+touch issuing/db/index.txt
+echo 2000 > issuing/db/serial
+
 # Create root CA key and cert
 
 echo Creating root CA
