@@ -25,7 +25,7 @@ Run the `mkpki` script to create the new root and issuing certificate authoritie
 bin/mkpki "Test Platform"
 ```
 
-Once the script has run, the root CA certificate is created in the directory root/cacerts as follows
+This creates the root CA certificate in the directory `root/cacerts` as follows
 
 - `cert.pem` the root CA certificate)
 - `truststore` a PKCS12 file containing the root CA certificate
