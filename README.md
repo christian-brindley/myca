@@ -27,7 +27,7 @@ $ bin/mkcert www.example.com
 Issuing certificate
 $ openssl x509 -in ee/www.example.com/cert.pem  -subject -noout
 subject= /CN=www.example.com
-$ keytool -list -keystore ee/www.example.com/keystore 
+$ keytool -list -keystore ee/www.example.com/keystore -storepass Passw0rd
 Keystore type: jks
 Keystore provider: SUN
 
