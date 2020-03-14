@@ -9,7 +9,7 @@ As of this version, the only kind of end entity certificate issued is a server c
 
 ## Requirements
 
-Requires bash and openssl
+Requires `bash` and `openssl`
 
 ## Installation
 
