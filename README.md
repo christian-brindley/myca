@@ -14,7 +14,7 @@ You can be up and running in 3 steps:
 ```
 $ git clone https://github.com/christian-brindley/myca
 $ cd myca
-$ bin/mkpki
+$ bin/mkpki "Test Platform"
 Creating CA databases
 Creating root CA
 Creating issuing CA
@@ -25,7 +25,8 @@ Now you can create server keys and certificates - e.g.
 ```
 $ bin/mkcert www.example.com
 Issuing certificate
-$ openssl x509 -in ee/www.example.com/cert.pem  -subject -noout
+$ openssl x509 -in ee/www.example.com/cert.pem -issuer -subject -noout
+issuer= /CN=Test Platform Issuing CA
 subject= /CN=www.example.com
 $ keytool -list -keystore ee/www.example.com/keystore -storepass Passw0rd
 Keystore type: jks
