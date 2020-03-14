@@ -22,3 +22,4 @@ touch root/db/index.txt
 echo 1000 > root/db/serial
 touch issuing/db/index.txt
 echo 2000 > issuing/db/serial
+rm -f logs/*

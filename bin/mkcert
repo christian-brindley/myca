@@ -18,6 +18,7 @@ KEYPASS=Passw0rd
 CACERT=issuing/cacerts/cert.pem
 DS_ADMIN_PORT=4444
 ISSUERDIR=issuing
+LOGFILE=logs/mkcert.log
 
 cn=$1
 
@@ -32,19 +33,22 @@ INSTALLDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/.
 cd $INSTALLDIR || exit 1
 eedir=ee/$cn
 
+echo Issuing certificate
+date >> $LOGFILE
+
 # Directory for new files
 
 mkdir -p $eedir
 
 # Create new server key pair and request
 
-openssl genrsa -aes256 -out $eedir/key.pem -passout pass:Passw0rd 2048 
+openssl genrsa -aes256 -out $eedir/key.pem -passout pass:Passw0rd 2048  >> $LOGFILE 2>&1
 
 openssl req -config $ISSUERDIR/etc/ca.conf \
       -key $eedir/key.pem \
       -new -sha256 -out $eedir/csr.pem \
       -subj "/CN=$cn" \
-      -passin pass:$KEYPASS
+      -passin pass:$KEYPASS >> $LOGFILE 2>&1
 
 # Issue new server certificate 
 
@@ -52,16 +56,16 @@ openssl ca -batch -config $ISSUERDIR/etc/ca.conf \
       -extensions server_cert -days 375 -notext -md sha256 \
       -in $eedir/csr.pem \
       -out $eedir/cert.pem \
-      -passin pass:$KEYPASS
+      -passin pass:$KEYPASS >> $LOGFILE 2>&1
 
 # Create LDAPS and replication keystores with new cert chain and key
 
 cat $eedir/cert.pem $CACERT > $eedir/chain.pem
 
-openssl pkcs12 -export  -in $eedir/chain.pem -inkey $eedir/key.pem -passin pass:$KEYPASS -name server-cert -out $eedir/keystore -passout pass:$KEYPASS
+openssl pkcs12 -export  -in $eedir/chain.pem -inkey $eedir/key.pem -passin pass:$KEYPASS -name server-cert -out $eedir/keystore -passout pass:$KEYPASS >> $LOGFILE 2>&1
 echo -n $KEYPASS > $eedir/keystore.pin
 
-openssl pkcs12 -export  -in $eedir/chain.pem -inkey $eedir/key.pem -passin pass:$KEYPASS -name ads-certificate -out $eedir/ads-truststore -passout pass:$KEYPASS
+openssl pkcs12 -export  -in $eedir/chain.pem -inkey $eedir/key.pem -passin pass:$KEYPASS -name ads-certificate -out $eedir/ads-truststore -passout pass:$KEYPASS >> $LOGFILE 2>&1
 echo -n $KEYPASS > $eedir/ads-truststore.pin
 
 # Create LDIF file for import into DS to trust replication certificate

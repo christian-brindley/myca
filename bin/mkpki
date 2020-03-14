@@ -12,7 +12,7 @@
 USAGE="mkpki commonNameBase"
 ISSUERDIR=issuing
 base_cn=$1
-STOREPASS=Passw0rd
+KEYPASS=Passw0rd
 LOGFILE=logs/mkpki.log
 
 
@@ -25,30 +25,32 @@ fi
 INSTALLDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/..
 cd $INSTALLDIR || exit 1
 
+date >> $LOGFILE
+
 # Create root CA key and cert
 
 echo Creating root CA
 
-openssl genrsa -aes256 -out root/keys/key.pem -passout pass:$STOREPASS 4096 >> $LOGFILE 2>&1
+openssl genrsa -aes256 -out root/keys/key.pem -passout pass:$KEYPASS 4096 >> $LOGFILE 2>&1
 
 openssl req  -config root/etc/ca.conf -key root/keys/key.pem -new \
    -x509 -days 7300 -sha256 -extensions v3_ca \
-   -out root/cacerts/cert.pem -passin pass:$STOREPASS -subj "/CN=$base_cn Root CA" >> $LOGFILE 2>&1
+   -out root/cacerts/cert.pem -passin pass:$KEYPASS -subj "/CN=$base_cn Root CA" >> $LOGFILE 2>&1
 
-openssl pkcs12 -export -nokeys -in root/cacerts/cert.pem -name root-ca -out root/cacerts/truststore -passout pass:$STOREPASS >> $LOGFILE 2>&1
-echo $STOREPASS > root/cacerts/truststore.pin
+openssl pkcs12 -export -nokeys -in root/cacerts/cert.pem -name root-ca -out root/cacerts/truststore -passout pass:$KEYPASS >> $LOGFILE 2>&1
+echo -n $KEYPASS > root/cacerts/truststore.pin
 
 # Create issuing CA key and cert
 
 echo Creating issuing CA
 
-openssl genrsa -aes256 -out $ISSUERDIR/keys/key.pem -passout pass:$STOREPASS 4096 >> $LOGFILE 2>&1
+openssl genrsa -aes256 -out $ISSUERDIR/keys/key.pem -passout pass:$KEYPASS 4096 >> $LOGFILE 2>&1
 
 openssl req -config $ISSUERDIR/etc/ca.conf -new -sha256 \
-   -key $ISSUERDIR/keys/key.pem -passin pass:$STOREPASS \
+   -key $ISSUERDIR/keys/key.pem -passin pass:$KEYPASS \
    -out $ISSUERDIR/csr/csr.pem -subj "/CN=$base_cn Issuing CA" >> $LOGFILE 2>&1
 
 openssl ca -config root/etc/ca.conf -extensions v3_intermediate_ca -days 3650 \
    -notext -md sha256 -in $ISSUERDIR/csr/csr.pem \
-   -out $ISSUERDIR/cacerts/cert.pem -passin pass:$STOREPASS -batch >> $LOGFILE 2>&1
+   -out $ISSUERDIR/cacerts/cert.pem -passin pass:$KEYPASS -batch >> $LOGFILE 2>&1
 
