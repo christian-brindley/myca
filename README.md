@@ -27,6 +27,14 @@ $ bin/mkcert www.example.com
 Issuing certificate
 $ openssl x509 -in ee/www.example.com/cert.pem  -subject -noout
 subject= /CN=www.example.com
+$ keytool -list -keystore ee/www.example.com/keystore 
+Keystore type: jks
+Keystore provider: SUN
+
+Your keystore contains 1 entry
+
+server-cert, 14-Mar-2020, PrivateKeyEntry, 
+Certificate fingerprint (SHA1): B5:8E:B0:8B:1F:FF:0D:9D:35:00:9A:20:89:68:38:52:8F:34:D3:A1
 ```
 
 ## Requirements
