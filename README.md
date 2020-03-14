@@ -61,5 +61,5 @@ To wipe out all CA and end-entity keys and certificates, run the `rmpki` script 
 ```
 bin/rmpki -f
 ```
-**Caution**: this is irreverisible. 
+**Caution**: this is irreversible. 
 
