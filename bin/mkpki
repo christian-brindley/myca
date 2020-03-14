@@ -12,6 +12,8 @@
 USAGE="mkpki commonNameBase"
 ISSUERDIR=issuing
 base_cn=$1
+STOREPASS=Passw0rd
+LOGFILE=logs/mkpki.log
 
 
 if [[ "$base_cn" == "" ]]
@@ -25,20 +27,28 @@ cd $INSTALLDIR || exit 1
 
 # Create root CA key and cert
 
-openssl genrsa -aes256 -out root/keys/key.pem -passout pass:Passw0rd 4096
+echo Creating root CA
+
+openssl genrsa -aes256 -out root/keys/key.pem -passout pass:$STOREPASS 4096 >> $LOGFILE 2>&1
 
 openssl req  -config root/etc/ca.conf -key root/keys/key.pem -new \
    -x509 -days 7300 -sha256 -extensions v3_ca \
-   -out root/cacerts/cert.pem -passin pass:Passw0rd -subj "/CN=$base_cn Root CA"
+   -out root/cacerts/cert.pem -passin pass:$STOREPASS -subj "/CN=$base_cn Root CA" >> $LOGFILE 2>&1
+
+openssl pkcs12 -export -nokeys -in root/cacerts/cert.pem -name root-ca -out root/cacerts/truststore -passout pass:$STOREPASS >> $LOGFILE 2>&1
+echo $STOREPASS > root/cacerts/truststore.pin
 
 # Create issuing CA key and cert
 
-openssl genrsa -aes256 -out $ISSUERDIR/keys/key.pem -passout pass:Passw0rd 4096
+echo Creating issuing CA
+
+openssl genrsa -aes256 -out $ISSUERDIR/keys/key.pem -passout pass:$STOREPASS 4096 >> $LOGFILE 2>&1
 
 openssl req -config $ISSUERDIR/etc/ca.conf -new -sha256 \
-   -key $ISSUERDIR/keys/key.pem -passin pass:Passw0rd \
-   -out $ISSUERDIR/csr/csr.pem -subj "/CN=$base_cn Issuing CA"
+   -key $ISSUERDIR/keys/key.pem -passin pass:$STOREPASS \
+   -out $ISSUERDIR/csr/csr.pem -subj "/CN=$base_cn Issuing CA" >> $LOGFILE 2>&1
 
 openssl ca -config root/etc/ca.conf -extensions v3_intermediate_ca -days 3650 \
    -notext -md sha256 -in $ISSUERDIR/csr/csr.pem \
-   -out $ISSUERDIR/cacerts/cert.pem -passin pass:Passw0rd -batch
+   -out $ISSUERDIR/cacerts/cert.pem -passin pass:$STOREPASS -batch >> $LOGFILE 2>&1
+
