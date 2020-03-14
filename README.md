@@ -14,7 +14,7 @@ You can be up and running in 3 steps:
 ```
 $ git clone https://github.com/christian-brindley/myca
 $ cd myca
-$ bin/mkpki "Test Platform"
+$ ./bin/mkpki "Test Platform"
 Creating CA databases
 Creating root CA
 Creating issuing CA
@@ -23,7 +23,7 @@ Creating issuing CA
 Now you can create server keys and certificates - e.g.
 
 ```
-$ bin/mkcert www.example.com
+$ ./bin/mkcert www.example.com
 Generating key pair
 Issuing certificate
 ```
@@ -31,10 +31,10 @@ Issuing certificate
 The new certificate and keystore are written to the local directory - e.g.
 
 ```
-$ openssl x509 -in ee/www.example.com/cert.pem -issuer -subject -noout
+$ openssl x509 -in ./ee/www.example.com/cert.pem -issuer -subject -noout
 issuer= /CN=Test Platform Issuing CA
 subject= /CN=www.example.com
-$ keytool -list -keystore ee/www.example.com/keystore -storepass Passw0rd
+$ keytool -list -keystore ./ee/www.example.com/keystore -storepass Passw0rd
 Keystore type: jks
 Keystore provider: SUN
 
@@ -62,7 +62,7 @@ cd myca
 Run the `mkpki` script to create the new root and issuing certificate authorities. Specify the prefix for the common name: this will be appended with ` Root CA` and ` Issuing CA` for the commonName fields of the root and issuing CA respectively. E.g.
 
 ```
-bin/mkpki "Test Platform"
+./bin/mkpki "Test Platform"
 ```
 
 This creates the root CA certificate in the directory `root/cacerts` as follows
@@ -78,7 +78,7 @@ The issuing CA certificate is written to `issuing/cacerts/cert.pem`.
 Run the `mkcert` script to issue a new end entity certificate, specifying the value to use for the commonName field. This version creates a server certificate, with extended key usage for client and server authentication. E.g.
 
 ```
-bin/mkcert "www.example.com"
+./bin/mkcert "www.example.com"
 ```
 
 Once the certificate is issued, the following files are created in `ee/{commonName}`
@@ -98,7 +98,7 @@ Once the certificate is issued, the following files are created in `ee/{commonNa
 To wipe out all CA and end-entity keys and certificates, run the `rmpki` script as follows
 
 ```
-bin/rmpki -f
+./bin/rmpki -f
 ```
 **Caution**: this is irreversible. 
 
