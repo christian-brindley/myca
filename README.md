@@ -26,6 +26,11 @@ Now you can create server keys and certificates - e.g.
 $ bin/mkcert www.example.com
 Generating key pair
 Issuing certificate
+```
+
+The new certificate and keystore are written to the local directory - e.g.
+
+```
 $ openssl x509 -in ee/www.example.com/cert.pem -issuer -subject -noout
 issuer= /CN=Test Platform Issuing CA
 subject= /CN=www.example.com
