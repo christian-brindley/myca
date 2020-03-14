@@ -23,7 +23,7 @@ Creating CA databases
 Creating root CA
 Creating issuing CA
 ```
-Now you can issue certificates - e.g.
+Now you can create server keys and certificates - e.g.
 
 ```
 $ bin/mkcert www.example.com
