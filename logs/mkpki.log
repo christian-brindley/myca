@@ -1,0 +1,33 @@
+Sat 14 Mar 2020 09:59:12 GMT
+Generating RSA private key, 4096 bit long modulus
+...........................................................................................................................................................................................................++
+.....................++
+e is 65537 (0x10001)
+Generating RSA private key, 4096 bit long modulus
+.............................................................................................................................................................................................................................++
+................................++
+e is 65537 (0x10001)
+Using configuration from root/etc/ca.conf
+Check that the request matches the signature
+Signature ok
+Certificate Details:
+        Serial Number: 4096 (0x1000)
+        Validity
+            Not Before: Mar 14 09:59:14 2020 GMT
+            Not After : Mar 12 09:59:14 2030 GMT
+        Subject:
+            commonName                = test Issuing CA
+        X509v3 extensions:
+            X509v3 Subject Key Identifier: 
+                A5:37:D1:46:67:46:D0:EC:8B:F8:D5:CF:92:2E:29:99:B9:85:22:86
+            X509v3 Authority Key Identifier: 
+                keyid:FC:37:61:08:D1:DC:BF:5D:48:64:84:91:6A:E8:74:88:C1:63:24:57
+
+            X509v3 Basic Constraints: critical
+                CA:TRUE, pathlen:0
+            X509v3 Key Usage: critical
+                Digital Signature, Certificate Sign, CRL Sign
+Certificate is to be certified until Mar 12 09:59:14 2030 GMT (3650 days)
+
+Write out database with 1 new entries
+Data Base Updated
