@@ -24,6 +24,7 @@ Now you can create server keys and certificates - e.g.
 
 ```
 $ bin/mkcert www.example.com
+Generating key pair
 Issuing certificate
 $ openssl x509 -in ee/www.example.com/cert.pem -issuer -subject -noout
 issuer= /CN=Test Platform Issuing CA
