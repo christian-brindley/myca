@@ -4,6 +4,8 @@ Mini certificate authority.
 
 Scripts and config for setting up and running a two layer CA hierarchy with an offline root and online issuing CA.
 
+As of this version, the only kind of end entity certificate issued is a server certificate, enabled for TLS client and server authentication.
+
 ## Requirements
 
 Requires bash and openssl
