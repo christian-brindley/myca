@@ -42,7 +42,7 @@ Run the `mkcert` script to issue a new end entity certificate, specifying the va
 bin/mkcert "www.example.com"
 ```
 
-Once the certificate is issued, the following files are created in ee/{commonName}
+Once the certificate is issued, the following files are created in `ee/{commonName}`
 
 - `cert.pem` the server certificate
 - `chain.pem` the server certificate and issuing CA
