@@ -34,6 +34,8 @@ This creates the root CA certificate in the directory `root/cacerts` as follows
 - `truststore` a PKCS12 file containing the root CA certificate
 - `truststore.pin` the password for truststore
 
+The issuing CA certificate is written to `issuing/cacerts/cert.pem`.
+
 ## Issuing certificates
 
 Run the `mkcert` script to issue a new end entity certificate, specifying the value to use for the commonName field. This version creates a server certificate, with extended key usage for client and server authentication. E.g.
