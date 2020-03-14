@@ -11,6 +11,27 @@ As of this version, the only kind of end entity certificate issued is a server c
 
 Requires `bash` and `openssl`
 
+## Overview
+
+You can be up and running in 3 steps:
+
+```
+$ git clone https://github.com/christian-brindley/myca
+$ cd myca
+$ bin/mkpki
+Creating CA databases
+Creating root CA
+Creating issuing CA
+```
+Now you can issue certificates - e.g.
+
+```
+$ bin/mkcert www.example.com
+Issuing certificate
+$ openssl x509 -in ee/www.example.com/cert.pem  -subject -noout
+subject= /CN=www.example.com
+```
+
 ## Installation
 
 Clone this repo into a new directory
