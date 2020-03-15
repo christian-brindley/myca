@@ -9,7 +9,7 @@ Scripts and config for setting up and running a two layer CA hierarchy with an o
 
 As of this version, the only kind of end entity certificate issued is a server certificate, enabled for TLS client and server authentication.
 
-You can be up and running in 2 steps:
+You can be up and running as follows:
 
 ```
 $ git clone https://github.com/christian-brindley/myca
