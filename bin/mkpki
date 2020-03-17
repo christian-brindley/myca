@@ -46,7 +46,7 @@ openssl req  -config root/etc/ca.conf -key root/keys/key.pem -new \
    -x509 -days 7300 -sha256 -extensions v3_ca \
    -out root/cacerts/cert.pem -passin pass:$KEYPASS -subj "/CN=$base_cn Root CA" >> $LOGFILE 2>&1
 
-openssl pkcs12 -export -nokeys -in root/cacerts/cert.pem -name root-ca -out root/cacerts/truststore -passout pass:$KEYPASS >> $LOGFILE 2>&1
+openssl pkcs12 -export -nokeys -in root/cacerts/cert.pem -caname root-ca -out root/cacerts/truststore -passout pass:$KEYPASS >> $LOGFILE 2>&1
 echo -n $KEYPASS > root/cacerts/truststore.pin
 
 # Create issuing CA key and cert
