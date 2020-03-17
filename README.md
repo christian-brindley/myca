@@ -46,7 +46,7 @@ Certificate fingerprint (SHA1): B5:8E:B0:8B:1F:FF:0D:9D:35:00:9A:20:89:68:38:52:
 
 ## Requirements
 
-Requires `bash` and `openssl`
+Requires `bash`, `openssl` and `keytool`
 
 ## Installation
 
