@@ -67,7 +67,7 @@ Run the `mkpki` script to create the new root and issuing certificate authoritie
 
 This creates the root CA certificate in the directory `root/cacerts` as follows
 
-- `cert.pem` the root CA certificate)
+- `cert.pem` the root CA certificate
 - `truststore` a PKCS12 file containing the root CA certificate
 - `truststore.pin` the password for truststore
 
